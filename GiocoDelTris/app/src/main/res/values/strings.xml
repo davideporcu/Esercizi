@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">GiocoDelTris</string>
+
+    <string name="btnGioca">Gioca</string>
+    <string name="btnGiocaAncora">Gioca Ancora</string>
+    <string name="txtEtcVincitore">HA VINTO</string>
+    <string name="txtSeparatoreNomiGiocatori">VS</string>
+    <string name="txtSeparatorePunteggi">-</string>
+
+    <string name="btnGiocoControUomo">Uomo VS Uomo</string>
+    <string name="btnGiocoControMacchina">Uomo VS Macchina</string>
+
+    <!-- toast-->
+    <string name="toastInserisciNome">Inserisci il tuo nome!</string>)
+    <string name="toastInserisciNomi">Inserisci i nomi dei giocatori</string>
+    <string name="toastTurnoDi">Turno di</string>
+
+    <string name="strPareggio">PAREGGIO!</string>
+    <string name="strHaiVinto">HAI VINTO!</string>
+    <string name="strHaiPerso">HAI PERSO!</string>
+
+</resources>
