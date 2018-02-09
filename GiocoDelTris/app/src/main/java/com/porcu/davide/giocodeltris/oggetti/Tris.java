@@ -1,7 +1,10 @@
 package com.porcu.davide.giocodeltris.oggetti;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+
 
 /**
  * Created by Davide on 06/02/2018.
@@ -77,39 +80,32 @@ public class Tris extends Observable {
     private void resetScacchiera() {
         isGiocoPartito = false;
         casellePiene = 0;
-        boolean simbolo = random.nextBoolean();// meglio se si inverte dopo ogni partita se si ripete
-        player1.setSimbolo(simbolo ? StatoCasellaTris.X : StatoCasellaTris.O);//generazione casuale
-        player2.setSimbolo(!simbolo ? StatoCasellaTris.X : StatoCasellaTris.O);
+        if (player1.getSimbolo() == StatoCasellaTris.X) {
+            player1.setSimbolo(StatoCasellaTris.O);
+            player2.setSimbolo(StatoCasellaTris.X);
+            isTurnoPrimoGiocatore = false;
+        } else {
+            player1.setSimbolo(StatoCasellaTris.X);
+            player2.setSimbolo(StatoCasellaTris.O);
+            isTurnoPrimoGiocatore = true;
+        }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 scacchiera[i][j] = StatoCasellaTris.VUOTO;
             }
         }
-        Object[] contenuto = new Object[2];
+        Object[] contenuto = new Object[3];
         contenuto[0] = player1;
         contenuto[1] = player2;
-
+        contenuto[2] = getGiocatoreCorrente();
         setChanged();
         notifyObservers(new Notifica(Notifica.UPDATESTART, contenuto));
     }
 
     public void startGioco() {
-        //scegli a caso primo giocatore
         resetScacchiera();
-        isTurnoPrimoGiocatore = !isTurnoPrimoGiocatore;
-        //setChanged();
-        //notifyObservers(new Notifica(Notifica.DEBUGMESSAGE, new Object[]{"Start Game"}));
-        if (!isTurnoPrimoGiocatore && isControMacchina) {//se macchina inizia per prima!
-            Mossa mossa = prossimaMossa(player2.getSimbolo());
-            scacchiera[mossa.getRiga()][mossa.getColonna()] = player2.getSimbolo();
-            Object[] contenuto = new Object[3];
-            contenuto[0] = mossa;
-            contenuto[1] = player2;//giocatore che ha fatto la mossa
-            contenuto[2] = player1;//giocatore successivo
-            Notifica notifica = new Notifica(Notifica.UPDATEMOSSA, contenuto);//notifico la vista
-            setChanged();
-            notifyObservers(notifica);
-            isTurnoPrimoGiocatore = !isTurnoPrimoGiocatore;
+        if (!isTurnoPrimoGiocatore && isControMacchina) {
+            doMossaMacchina();
         }
         isGiocoPartito = true;
     }
@@ -144,38 +140,41 @@ public class Tris extends Observable {
             setChanged();
             notifyObservers(notifica);
             controllaPareggio();
-
-            if (isGiocoPartito && isControMacchina) {//turno della macchina dopo quello dell'umano
-                Mossa mossaMacchina = prossimaMossa(player2.getSimbolo());
-                System.out.println(mossaMacchina);
-                scacchiera[mossaMacchina.getRiga()][mossaMacchina.getColonna()] = player2.getSimbolo();
-                casellePiene++;
-                Notifica notificaMacchina;
-                if (haVinto(player2.getSimbolo())) {
-                    isGiocoPartito = false;//finito il gioco
-                    Player vincitore = player2;
-                    vincitore.addPuntoVittoria();
-                    Object[] contenutoVittoria = new Object[2];
-                    contenutoVittoria[0] = mossaMacchina;
-                    contenutoVittoria[1] = vincitore;//vincitore
-                    setChanged();
-                    notificaMacchina = new Notifica(Notifica.UPDATEFORWINNER, contenutoVittoria);
-                } else {
-                    Object[] contenuto = new Object[3];
-                    contenuto[0] = mossaMacchina;
-                    contenuto[1] = player2;//giocatore che ha fatto la mossa
-                    contenuto[2] = player1;//giocatore successivo
-                    notificaMacchina = new Notifica(Notifica.UPDATEMOSSA, contenuto);//notifico la vista
-                    isTurnoPrimoGiocatore = !isTurnoPrimoGiocatore;
-                }
-                setChanged();
-                notifyObservers(notificaMacchina);
-                controllaPareggio();
+            if (isGiocoPartito && isControMacchina) {
+                doMossaMacchina();
             }
-
         }
 
     }
+
+    private void doMossaMacchina() {
+        Mossa mossaMacchina = prossimaMossa(player2.getSimbolo());
+        scacchiera[mossaMacchina.getRiga()][mossaMacchina.getColonna()] = player2.getSimbolo();
+        casellePiene++;
+        Notifica notificaMacchina;
+        if (haVinto(player2.getSimbolo())) {
+            isGiocoPartito = false;//finito il gioco
+            Player vincitore = player2;
+            vincitore.addPuntoVittoria();
+            Object[] contenutoVittoria = new Object[2];
+            contenutoVittoria[0] = mossaMacchina;
+            contenutoVittoria[1] = vincitore;//vincitore
+            setChanged();
+            notificaMacchina = new Notifica(Notifica.UPDATEFORWINNER, contenutoVittoria);
+        } else {
+            Object[] contenuto = new Object[3];
+            contenuto[0] = mossaMacchina;
+            contenuto[1] = player2;//giocatore che ha fatto la mossa
+            contenuto[2] = player1;//giocatore successivo
+            notificaMacchina = new Notifica(Notifica.UPDATEMOSSA, contenuto);//notifico la vista
+            isTurnoPrimoGiocatore = !isTurnoPrimoGiocatore;
+        }
+        setChanged();
+        notifyObservers(notificaMacchina);
+        controllaPareggio();
+
+    }
+
 
     private void controllaPareggio() {
         if (isGiocoPartito && casellePiene == 9) {
@@ -233,8 +232,8 @@ public class Tris extends Observable {
         Mossa mossa;
         if (casellePiene == 0) {
             mossa = new Mossa(random.nextInt(3), random.nextInt(3));
-        } else if (scacchiera[1][1] == StatoCasellaTris.VUOTO) {//fortuna nella cella centrale...
-            mossa = new Mossa(1, 1);
+       /* } else if (scacchiera[1][1] == StatoCasellaTris.VUOTO) {//fortuna nella cella centrale...
+            mossa = new Mossa(1, 1);*/
         } else {
             mossa = prossimaMossaVincente(giocatore);//cerca la mossa vincente...
             if (mossa == null) {//se non c'è allora..
@@ -251,16 +250,23 @@ public class Tris extends Observable {
                         }
                     }
                 }
-                //magari qui a random-> così da variare e non far rientrare in schemi precisi e limitare i danni
-
-                if (mossa == null) {                                    //se non è disponibile nessuna mossa di difesa
-                    for (int i = 0; i < 3 && mossa == null; i++) {      // scegli la prima cella vuota disponibile
-                        for (int j = 0; j < 3 && mossa == null; j++) {
-                            if (scacchiera[i][j] == StatoCasellaTris.VUOTO) {
-                                mossa = new Mossa(i, j);
+                //random-> così da variare e non far rientrare in schemi precisi e limitare i danni
+                ArrayList<Mossa> mosseDisponibili = new ArrayList<Mossa>();
+                if (mossa == null) {
+                    if (scacchiera[1][1] == StatoCasellaTris.VUOTO) {//fortuna nella cella centrale...
+                        mossa = new Mossa(1, 1);
+                    } else {
+                        //se non è disponibile nessuna mossa di difesa
+                        for (int i = 0; i < 3 && mossa == null; i++) {      // scegli la prima cella vuota disponibile
+                            for (int j = 0; j < 3 && mossa == null; j++) {
+                                if (scacchiera[i][j] == StatoCasellaTris.VUOTO) {
+                                    mosseDisponibili.add(new Mossa(i, j));
+                                }
                             }
                         }
+                        mossa = mosseDisponibili.get(random.nextInt(mosseDisponibili.size()));
                     }
+
                 }
             }
         }

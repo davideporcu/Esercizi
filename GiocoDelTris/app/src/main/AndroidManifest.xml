@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".activity.TrisActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".activity.EsitoPartitaActivity"
             android:screenOrientation="portrait"

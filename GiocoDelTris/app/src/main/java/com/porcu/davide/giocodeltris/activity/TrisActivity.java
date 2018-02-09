@@ -30,6 +30,7 @@ public class TrisActivity extends AppCompatActivity implements Observer {
     private TextView txtSimboloPlayer2;
     private TextView txtPuntiPlayer1;
     private TextView txtPuntiPlayer2;
+    private TextView txtNomeGicocatoreDiTurno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class TrisActivity extends AppCompatActivity implements Observer {
         txtSimboloPlayer2 = findViewById(R.id.txtSimboloPlayer2);
         txtPuntiPlayer1 = findViewById(R.id.txtPuntiPlayer1);
         txtPuntiPlayer2 = findViewById(R.id.txtPuntiPlayer2);
+        txtNomeGicocatoreDiTurno = findViewById(R.id.txtNomeGicocatoreDiTurno);
 
         txtNomePlayer1.setText(player1.getNome());
         txtNomePlayer2.setText(player2.getNome());
@@ -82,6 +84,7 @@ public class TrisActivity extends AppCompatActivity implements Observer {
             case Notifica.UPDATESTART:
                 Player player1 = (Player) contenuto[0];
                 Player player2 = (Player) contenuto[1];
+                Player playerDiTurno = (Player) contenuto[2];
                 //nel caso di restart gioco
                 for (Button[] rigaBtns : scacchiera) {
                     for (Button btn : rigaBtns) {
@@ -92,7 +95,9 @@ public class TrisActivity extends AppCompatActivity implements Observer {
                 txtSimboloPlayer2.setText(player2.getSimbolo().toString());
                 txtPuntiPlayer1.setText(player1.getPuntiVittorie() + "");
                 txtPuntiPlayer2.setText(player2.getPuntiVittorie() + "");
-
+                if (!player1.getIsMacchina() && !player2.getIsMacchina()) {//la macchina fa la mossa in automatico
+                    txtNomeGicocatoreDiTurno.setText(getResources().getString(R.string.toastTurnoDi) + " " + playerDiTurno.getNome());
+                }
                 break;
             case Notifica.UPDATEMOSSA:
                 //aggiorna e mostra la mossa
@@ -101,7 +106,8 @@ public class TrisActivity extends AppCompatActivity implements Observer {
                 Button btnMossa = scacchiera[mossaUpdate.getRiga()][mossaUpdate.getColonna()];
                 btnMossa.setText(player.getSimbolo().toString());
                 Player playerSuccessivo = (Player) contenuto[2];
-                if (!playerSuccessivo.getIsMacchina()) {
+                if (!player.getIsMacchina() && !playerSuccessivo.getIsMacchina()) {
+                    txtNomeGicocatoreDiTurno.setText(getResources().getString(R.string.toastTurnoDi) + " " + playerSuccessivo.getNome());
                     Toast.makeText(this, getResources().getString(R.string.toastTurnoDi) + " " + playerSuccessivo.getNome(), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -114,7 +120,7 @@ public class TrisActivity extends AppCompatActivity implements Observer {
 
                 Intent i = new Intent(this, EsitoPartitaActivity.class);
                 i.putExtra("winnerPlayer", winner);
-                    i.putExtra("isGiocoConMacchina", giocoTris.getIsControMacchina());
+                i.putExtra("isGiocoConMacchina", giocoTris.getIsControMacchina());
 
                 startActivityForResult(i, ESITO_PARTITA_ACTIVITY);
                 break;

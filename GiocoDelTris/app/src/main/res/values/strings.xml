@@ -9,8 +9,10 @@
 
     <string name="btnGiocoControUomo">Uomo VS Uomo</string>
     <string name="btnGiocoControMacchina">Uomo VS Macchina</string>
+    <string name="txtHintPlayer1">Nome Giocatore 1</string>
+    <string name="txtHintPlayer2">Nome Giocatore 2</string>
 
-    <!-- toast-->
+
     <string name="toastInserisciNome">Inserisci il tuo nome!</string>)
     <string name="toastInserisciNomi">Inserisci i nomi dei giocatori</string>
     <string name="toastTurnoDi">Turno di</string>
