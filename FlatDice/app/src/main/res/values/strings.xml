@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FlatDice</string>
+
+    <string name="txtWelcomeFragment">Scorri per iniziare</string>
+    <string name="txtWelcomeFragmentSuggestion">Tap con 5 dita per uscire</string>
+
+</resources>

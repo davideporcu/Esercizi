@@ -20,7 +20,7 @@ Sono presenti quattro classi utili allo svolgimento del gioco:
 - `Player` che rappresenta un giocatore con il suo nome, i suoi punti, il simbolo scelto (X o O) e se è umano 
 - `Mossa` che rappresenta una mossa fatta da un giocatore attraverso delle coordinate (Riga,Colonna). Viene utilizzata per informare la classe Tris che una mossa (su un bottone) è stata eseguita
 - `Notifica` che rappresenta un messaggio ricevuto dall'observer della classe Tris che, a seconda della sua natura, comporta diverse azioni di aggiornamento per TrisActivity
-- `Tris` che rappresenta il gioco del tris attraverso una matrice. Contiene vari metodi per l'inizio, svolgimento e riavvio del gioco. Contiene i metodi per la verifica del vincitore o del pareggio oltre che a quelli per la determinazione delle mosse della macchina.
+- `Tris` che rappresenta il gioco del tris attraverso una matrice. Contiene vari metodi per l'inizio, svolgimento e riavvio del gioco. Contiene i metodi per la verifica del vincitore e del pareggio oltre che a quelli per la determinazione delle mosse della macchina.
 
 La creazione di nuove activity viene fatto attraverso Intent espliciti e con il passaggio di valori aggiuntivi. 
 
