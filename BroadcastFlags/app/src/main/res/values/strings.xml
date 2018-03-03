@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">BroadcastFlags</string>
 
-    <string name="header">A broadcast receiver with  flags </string>
+    <string name="header">A broadcast receiver with</string>
 
     <string name="flag_update_current">FLAG_UPDATE_CURRENT</string>
     <string name="flag_one_shot">FLAG_ONE_SHOT</string>
     <string name="flag_no_create">FLAG_NO_CREATE</string>
     <string name="flag_immutable">FLAG_IMMUTABLE</string>
     <string name="flag_cancel_current">FLAG_CANCEL_CURRENT</string>
+    <string name="tipo_flag_ricevuto">Tipo Flag Ricevuto:</string>
+    <string name="ultimo_broadcast_ricevuto">Ultimo Broadcast Ricevuto:</string>
+    <string name="tipo_flag_click">Tipo Flag Click:</string>
+    <string name="istante_click">Istante Click:</string>
+    <string name="start_counter">Start Counter</string>
 
 </resources>

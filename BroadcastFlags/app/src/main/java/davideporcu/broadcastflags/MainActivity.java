@@ -8,11 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private int flagPendingIntent;
+    private String extraStringForIntent;//per avere un valore che può variare...
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         RadioButton view = findViewById(R.id.radio_flag_cancel_current);
         view.setChecked(true);
         flagPendingIntent = PendingIntent.FLAG_CANCEL_CURRENT;
-
+        extraStringForIntent = "FLAG_CANCEL_CURRENT";
 
     }
 
@@ -33,10 +40,14 @@ public class MainActivity extends AppCompatActivity {
             delay = Integer.parseInt(text.getText().toString());
 
             Intent intent = new Intent(this, MyBroadcastReceiver.class);
+            intent.putExtra("flag", extraStringForIntent);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1234567890, intent, flagPendingIntent);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (delay * 1000), pendingIntent);
-            Toast.makeText(this, "... waiting " + delay + " seconds", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "... waiting " + delay + " seconds", Toast.LENGTH_SHORT).show();
+
+
         } catch (Exception ex) {
             Toast.makeText(this, "Inserire un numero valido", Toast.LENGTH_SHORT).show();
         }
@@ -50,24 +61,34 @@ public class MainActivity extends AppCompatActivity {
         // Check which radio button was clicked
         switch (view.getId()) {
             case R.id.radio_flag_cancel_current:
-                if (checked)
+                if (checked) {
                     flagPendingIntent = PendingIntent.FLAG_CANCEL_CURRENT;
+                    extraStringForIntent = "FLAG_CANCEL_CURRENT";
+                }
                 break;
             case R.id.radio_flag_immutable:
-                if (checked)
+                if (checked) {
                     flagPendingIntent = PendingIntent.FLAG_IMMUTABLE;
+                    extraStringForIntent = "FLAG_IMMUTABLE";
+                }
                 break;
             case R.id.radio_flag_no_create:
-                if (checked)
+                if (checked) {
                     flagPendingIntent = PendingIntent.FLAG_NO_CREATE;
+                    extraStringForIntent = "FLAG_NO_CREATE";
+                }
                 break;
             case R.id.radio_flag_one_shot:
-                if (checked)
+                if (checked) {
                     flagPendingIntent = PendingIntent.FLAG_ONE_SHOT;
+                    extraStringForIntent = "FLAG_ONE_SHOT";
+                }
                 break;
             case R.id.radio_flag_update_current:
-                if (checked)
+                if (checked) {
                     flagPendingIntent = PendingIntent.FLAG_UPDATE_CURRENT;
+                    extraStringForIntent = "FLAG_UPDATE_CURRENT";
+                }
                 break;
         }
     }

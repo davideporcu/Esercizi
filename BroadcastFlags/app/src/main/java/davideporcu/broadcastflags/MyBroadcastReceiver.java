@@ -3,6 +3,7 @@ package davideporcu.broadcastflags;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.Toast;
 
@@ -14,10 +15,18 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "VIBRATE", Toast.LENGTH_LONG).show();
+
+        String typeOfFlag=intent.getStringExtra("flag");
+        Toast.makeText(context, "VIBRATE - "+typeOfFlag, Toast.LENGTH_LONG).show();
         // Vibrate the mobile phone
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(300);
+
+
+
+
+
+
     }
 
 }
