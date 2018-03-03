@@ -3,7 +3,7 @@
 **ITIS "C. Zuccante"**
 
 ---
-# BroadcastReceiver and various Flags for PendingIntent
+# BroadcastReceiver and various Flags of PendingIntent
 Questo progetto Android è ispirato al progetto `AM003_Receiver` di Andrea Morettin ( https://github.com/divino-marchese/android ).
 
 Il progetto consiste nella realizzazione di un applicazione che consenta di scegliere un flag della classe PendingIntent e osservarne il diverso risultato. Il flag da utilizzare viene scelto attraverso l'utilizzo di radio button. Viene inviato un broadcast dopo un certo tempo (in secondi) indicato dal'utente (utilizzo dell'AlarmManager). 
