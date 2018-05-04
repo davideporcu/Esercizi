@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Social</string>
+    <string name="get_json">Aggiorna lista hobby</string>
+</resources>
